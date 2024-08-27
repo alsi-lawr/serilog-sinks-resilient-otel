@@ -16,6 +16,8 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <LangVersion>12</LangVersion>
         <NoWarn>CS8981</NoWarn>
+        <SymbolsPackageFormat>snupkg</SymbolsPackageFormat>
+        <IncludeSymbols>true</IncludeSymbols>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
