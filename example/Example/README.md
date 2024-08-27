@@ -82,7 +82,7 @@ Resource attributes:
      -> pi: Double(3.14)
 ScopeLogs #0
 ScopeLogs SchemaURL: https://opentelemetry.io/schemas/v1.13.0
-InstrumentationScope Serilog.Sinks.OpenTelemetry 0.0.4.0
+InstrumentationScope Serilog.Sinks.Resilient.OTel 0.0.4.0
 LogRecord #0
 ObservedTimestamp: 1970-01-01 00:00:00 +0000 UTC
 Timestamp: 2023-01-10 13:33:27.784 +0000 UTC
@@ -109,7 +109,7 @@ Attributes:
      -> protocol: Str(http/protobuf)
      -> exception.type: Str(System.Exception)
      -> exception.message: Str(http/protobuf)
-     -> exception.stacktrace: Str(   at SerilogSinksOpenTelemetryExample.Program.SendLogs(ILogger logger, String protocol) in /Users/loomis/Documents/code/serilog/serilog-sinks-opentelemetry/test/Serilog.Sinks.OpenTelemetry.Example/Program.cs:line 71)
+     -> exception.stacktrace: Str(   at SerilogSinksOpenTelemetryExample.Program.SendLogs(ILogger logger, String protocol) in /Users/loomis/Documents/code/serilog/Serilog.Sinks.Resilient.OTel/test/Serilog.Sinks.Resilient.OTel.Example/Program.cs:line 71)
      -> serilog.message.template: Str({@Roll})
      -> serilog.message.template_hash: Str(175c59a67eddf1ca6a020a2ee6919e93)
 Trace ID: 77c467ca8916d12d54b8a4ecfbe10d3f
@@ -129,7 +129,7 @@ Resource attributes:
      -> pi: Double(3.14)
 ScopeLogs #0
 ScopeLogs SchemaURL: https://opentelemetry.io/schemas/v1.13.0
-InstrumentationScope Serilog.Sinks.OpenTelemetry 0.0.4.0
+InstrumentationScope Serilog.Sinks.Resilient.OTel 0.0.4.0
 LogRecord #0
 ObservedTimestamp: 1970-01-01 00:00:00 +0000 UTC
 Timestamp: 2023-01-10 13:33:27.734 +0000 UTC
@@ -156,7 +156,7 @@ Resource attributes:
      -> pi: Double(3.14)
 ScopeLogs #0
 ScopeLogs SchemaURL: https://opentelemetry.io/schemas/v1.13.0
-InstrumentationScope Serilog.Sinks.OpenTelemetry 0.0.4.0
+InstrumentationScope Serilog.Sinks.Resilient.OTel 0.0.4.0
 LogRecord #0
 ObservedTimestamp: 1970-01-01 00:00:00 +0000 UTC
 Timestamp: 2023-01-10 13:33:27.772 +0000 UTC
@@ -168,7 +168,7 @@ Attributes:
      -> protocol: Str(grpc/protobuf)
      -> exception.type: Str(System.Exception)
      -> exception.message: Str(grpc/protobuf)
-     -> exception.stacktrace: Str(   at SerilogSinksOpenTelemetryExample.Program.SendLogs(ILogger logger, String protocol) in /Users/loomis/Documents/code/serilog/serilog-sinks-opentelemetry/test/Serilog.Sinks.OpenTelemetry.Example/Program.cs:line 71)
+     -> exception.stacktrace: Str(   at SerilogSinksOpenTelemetryExample.Program.SendLogs(ILogger logger, String protocol) in /Users/loomis/Documents/code/serilog/Serilog.Sinks.Resilient.OTel/test/Serilog.Sinks.Resilient.OTel.Example/Program.cs:line 71)
      -> serilog.message.template: Str({@Roll})
      -> serilog.message.template_hash: Str(175c59a67eddf1ca6a020a2ee6919e93)
 Trace ID: 8933b91aefd5ee9de22be4c1b0c01052

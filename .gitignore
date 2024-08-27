@@ -396,6 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/test/Serilog.Sinks.OpenTelemetry.Tests/PublicApiVisibilityTests.received.txt
+/test/Serilog.Sinks.Resilient.OTel.Tests/PublicApiVisibilityTests.received.txt
 
 .DS_Store

@@ -17,8 +17,8 @@
 using Serilog;
 using System.Diagnostics;
 using Serilog.Core;
-using Serilog.Sinks.OpenTelemetry;
-using Serilog.Sinks.OpenTelemetry.FileFallback;
+using Serilog.Sinks.Resilient.OTel;
+using Serilog.Sinks.Resilient.OTel.FileFallback;
 
 // Without activity listeners present, trace and span ids are not collected.
 using var listener = new ActivityListener();
