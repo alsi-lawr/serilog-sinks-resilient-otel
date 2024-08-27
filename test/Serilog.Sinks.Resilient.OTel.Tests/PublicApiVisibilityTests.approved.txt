@@ -1,0 +1,89 @@
+namespace Serilog
+{
+    public static class OpenTelemetryLoggerConfigurationExtensions
+    {
+        public static Serilog.LoggerConfiguration OpenTelemetry(this Serilog.Configuration.LoggerAuditSinkConfiguration loggerAuditSinkConfiguration, System.Action<Serilog.Sinks.Resilient.OTel.OpenTelemetrySinkOptions> configure) { }
+        public static Serilog.LoggerConfiguration OpenTelemetry(this Serilog.Configuration.LoggerSinkConfiguration loggerSinkConfiguration, System.Action<Serilog.Sinks.Resilient.OTel.BatchedOpenTelemetrySinkOptions> configure, bool ignoreEnvironment = false) { }
+        public static Serilog.LoggerConfiguration OpenTelemetry(this Serilog.Configuration.LoggerSinkConfiguration loggerSinkConfiguration, System.Action<Serilog.Sinks.Resilient.OTel.BatchedOpenTelemetrySinkOptions> configure, System.Func<string, string?>? getConfigurationVariable) { }
+        public static Serilog.LoggerConfiguration OpenTelemetry(this Serilog.Configuration.LoggerAuditSinkConfiguration loggerAuditSinkConfiguration, string endpoint = "http://localhost:4317", Serilog.Sinks.Resilient.OTel.OtlpProtocol protocol = 0, System.Collections.Generic.IDictionary<string, string>? headers = null, System.Collections.Generic.IDictionary<string, object>? resourceAttributes = null, Serilog.Sinks.Resilient.OTel.IncludedData? includedData = default, Serilog.Sinks.Resilient.OTel.FileFallback.FallbackConfigurationOptions? fallbackOptions = null) { }
+        public static Serilog.LoggerConfiguration OpenTelemetry(this Serilog.Configuration.LoggerSinkConfiguration loggerSinkConfiguration, string endpoint = "http://localhost:4317", Serilog.Sinks.Resilient.OTel.OtlpProtocol protocol = 0, System.Collections.Generic.IDictionary<string, string>? headers = null, System.Collections.Generic.IDictionary<string, object>? resourceAttributes = null, Serilog.Sinks.Resilient.OTel.IncludedData? includedData = default, Serilog.Events.LogEventLevel restrictedToMinimumLevel = 0, Serilog.Core.LoggingLevelSwitch? levelSwitch = null, Serilog.Sinks.Resilient.OTel.FileFallback.FallbackConfigurationOptions? fallbackOptions = null) { }
+    }
+}
+namespace Serilog.Sinks.Resilient.OTel
+{
+    public class BatchedOpenTelemetrySinkOptions : Serilog.Sinks.Resilient.OTel.OpenTelemetrySinkOptions
+    {
+        public BatchedOpenTelemetrySinkOptions() { }
+        public Serilog.Configuration.BatchingOptions BatchingOptions { get; }
+    }
+    [System.Flags]
+    public enum IncludedData
+    {
+        None = 0,
+        MessageTemplateTextAttribute = 1,
+        MessageTemplateMD5HashAttribute = 2,
+        TraceIdField = 4,
+        SpanIdField = 8,
+        SpecRequiredResourceAttributes = 16,
+        TemplateBody = 32,
+        MessageTemplateRenderingsAttribute = 64,
+        SourceContextAttribute = 128,
+    }
+    public class OpenTelemetrySinkOptions
+    {
+        public OpenTelemetrySinkOptions() { }
+        public string? Endpoint { get; set; }
+        public System.IFormatProvider? FormatProvider { get; set; }
+        public System.Collections.Generic.IDictionary<string, string> Headers { get; set; }
+        public System.Net.Http.HttpMessageHandler? HttpMessageHandler { get; set; }
+        public Serilog.Sinks.Resilient.OTel.IncludedData IncludedData { get; set; }
+        public Serilog.Core.LoggingLevelSwitch? LevelSwitch { get; set; }
+        public string? LogsEndpoint { get; set; }
+        public System.Func<bool, System.IDisposable>? OnBeginSuppressInstrumentation { get; set; }
+        public Serilog.Sinks.Resilient.OTel.OtlpProtocol Protocol { get; set; }
+        public System.Collections.Generic.IDictionary<string, object> ResourceAttributes { get; set; }
+        public Serilog.Events.LogEventLevel RestrictedToMinimumLevel { get; set; }
+        public string? TracesEndpoint { get; set; }
+        public void FallbackWith(System.Action<Serilog.Sinks.Resilient.OTel.FileFallback.FallbackConfigurationOptions> configure) { }
+        public void FallbackWith(System.Action<Serilog.Sinks.Resilient.OTel.FileFallback.FileSinkOptions> fileSinkOptions, Serilog.Sinks.Resilient.OTel.FileFallback.LogFormat logFormat) { }
+    }
+    public enum OtlpProtocol
+    {
+        Grpc = 0,
+        HttpProtobuf = 1,
+    }
+}
+namespace Serilog.Sinks.Resilient.OTel.FileFallback
+{
+    public class FallbackConfigurationOptions
+    {
+        public FallbackConfigurationOptions() { }
+        public Serilog.Sinks.Resilient.OTel.FileFallback.FallbackConfigurationOptions ToFile(System.Action<Serilog.Sinks.Resilient.OTel.FileFallback.FileSinkOptions> fileSinkOptions, Serilog.Sinks.Resilient.OTel.FileFallback.LogFormat logFormat = 0) { }
+        public Serilog.Sinks.Resilient.OTel.FileFallback.FallbackConfigurationOptions ToLogFile(System.Action<Serilog.Sinks.Resilient.OTel.FileFallback.FileSinkOptions> fileSinkOptions, Serilog.Sinks.Resilient.OTel.FileFallback.LogFormat logFormat = 0) { }
+        public Serilog.Sinks.Resilient.OTel.FileFallback.FallbackConfigurationOptions ToTraceFile(System.Action<Serilog.Sinks.Resilient.OTel.FileFallback.FileSinkOptions> fileSinkOptions, Serilog.Sinks.Resilient.OTel.FileFallback.LogFormat logFormat = 0) { }
+    }
+    public class FileSinkOptions
+    {
+        public FileSinkOptions() { }
+        public bool Buffered { get; set; }
+        public long? FileSizeLimitBytes { get; set; }
+        public System.TimeSpan? FlushToDiskInterval { get; set; }
+        public Serilog.Sinks.File.FileLifecycleHooks? Hooks { get; set; }
+        public string Path { get; set; }
+        public int? RetainedFileCountLimit { get; set; }
+        public System.TimeSpan? RetainedFileTimeLimit { get; set; }
+        public bool RollOnFileSizeLimit { get; set; }
+        public Serilog.RollingInterval RollingInterval { get; set; }
+        public bool Shared { get; set; }
+    }
+    public struct FileSystemFallback
+    {
+        public static readonly Serilog.Sinks.Resilient.OTel.FileFallback.FileSystemFallback None;
+        public static Serilog.Sinks.Resilient.OTel.FileFallback.FileSystemFallback Configure(System.Action<Serilog.Sinks.Resilient.OTel.FileFallback.FileSinkOptions> configuration, Serilog.Sinks.Resilient.OTel.FileFallback.LogFormat logFormat = 0) { }
+    }
+    public enum LogFormat
+    {
+        NDJson = 0,
+        Protobuf = 1,
+    }
+}

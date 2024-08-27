@@ -1,4 +1,4 @@
-# Serilog.Sinks.OpenTelemetry [![Build status](https://ci.appveyor.com/api/projects/status/sqmrvw34pcuatwl5/branch/dev?svg=true)](https://ci.appveyor.com/project/serilog/serilog-sinks-opentelemetry/branch/dev) [![NuGet Version](https://img.shields.io/nuget/vpre/Serilog.Sinks.OpenTelemetry.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.OpenTelemetry/)
+# Serilog.Sinks.Resilient.OTel
 
 This Serilog sink transforms Serilog events into OpenTelemetry
 `LogRecord`s and sends them to an OTLP (gRPC or HTTP) endpoint.
@@ -15,10 +15,10 @@ properties by default.
 ## Getting started
 
 To use the OpenTelemetry sink, first install the
-[NuGet package](https://nuget.org/packages/serilog.sinks.opentelemetry):
+[NuGet package](https://nuget.org/packages/Serilog.Sinks.Resilient.OTel):
 
 ```shell
-dotnet add package Serilog.Sinks.OpenTelemetry
+dotnet add package Serilog.Sinks.Resilient.OTel
 ```
 
 Then enable the sink using `WriteTo.OpenTelemetry()`:
@@ -64,7 +64,7 @@ Log.Logger = new LoggerConfiguration()
 ```
 
 This supports the sink's full set of configuration options. See the
-`OpenTelemetrySinkOptions.cs` file for the full set of options. 
+`OpenTelemetrySinkOptions.cs` file for the full set of options.
 Some of the more important parameters are discussed in the following
 sections.
 
@@ -78,7 +78,7 @@ deployment environment. To do so, add the `endpoint` argument to the `WriteTo.Op
 You may also want to set the protocol. The supported values
 are:
 
-- `OtlpProtocol.Grpc`: Sends a protobuf representation of the 
+- `OtlpProtocol.Grpc`: Sends a protobuf representation of the
    OpenTelemetry Logs over a gRPC connection (the default).
 - `OtlpProtocol.HttpProtobuf`: Sends a protobuf representation of the
    OpenTelemetry Logs over an HTTP connection.
@@ -92,8 +92,8 @@ the configured logger.
 
 These resource attributes may be provided as a `Dictionary<string, Object>`
 when configuring a logger. OpenTelemetry allows resource attributes
-with rich values; however, this implementation _only_ supports resource 
-attributes with primitive values. 
+with rich values; however, this implementation _only_ supports resource
+attributes with primitive values.
 
 > :warning: Resource attributes with non-primitive values will be
 > silently ignored.
@@ -128,15 +128,15 @@ methods.
 
 ## Serilog `LogEvent` to OpenTelemetry log record mapping
 
-The following table provides the mapping between the Serilog log 
-events and the OpenTelemetry log records. 
+The following table provides the mapping between the Serilog log
+events and the OpenTelemetry log records.
 
 Serilog `LogEvent`               | OpenTelemetry `LogRecord`                  | Comments                                                                                      |
----------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------| 
+---------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------|
 `Exception.GetType().ToString()` | `Attributes["exception.type"]`             |                                                                                               |
 `Exception.Message`              | `Attributes["exception.message"]`          | Ignored if empty                                                                              |
 `Exception.StackTrace`           | `Attributes[ "exception.stacktrace"]`      | Value of `ex.ToString()`                                                                      |
-`Level`                          | `SeverityNumber`                           | Serilog levels are mapped to corresponding OpenTelemetry severities                           | 
+`Level`                          | `SeverityNumber`                           | Serilog levels are mapped to corresponding OpenTelemetry severities                           |
 `Level.ToString()`               | `SeverityText`                             |                                                                                               |
 `Message`                        | `Body`                                     | Culture-specific formatting can be provided via sink configuration                            |
 `MessageTemplate`                | `Attributes[ "message_template.text"]`     | Requires `IncludedData. MessageTemplateText` (enabled by default)                             |
@@ -176,7 +176,7 @@ In addition to the field mapping performed for log records, events that represen
 spans can carry the special properties listed below.
 
 Serilog `LogEvent`               | OpenTelemetry `Span` | Comments                               |
----------------------------------|----------------------|----------------------------------------| 
+---------------------------------|----------------------|----------------------------------------|
 `MessageTemplate`                | `Name`               |                                        |
 `Properties["ParentSpanId"]` | `ParentSpanId`       | Value must be of type `ActivitySpanId` |
 `Properties["SpanKind"]` | `Kind`               | Value must be of type `ActivityKind`   |
@@ -210,7 +210,7 @@ Configuration is achievied using the fluent options configuration exposed with t
 fallback sinks can be configured using the `FallbackWith(Action<FallbackConfigurationOptions> config)` api for granular control,
 or using the `FallbackWith(Action<FileSinkOptions> fileSink, LogFormat logFormat)` api for unified fallbacks.
 
-### Example using one fallback:
+### Example using one fallback
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
@@ -225,7 +225,7 @@ Log.Logger = new LoggerConfiguration()
         // ...
 ```
 
-### Example using separate fallbacks:
+### Example using separate fallbacks
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
