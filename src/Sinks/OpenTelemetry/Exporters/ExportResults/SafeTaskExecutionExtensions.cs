@@ -9,9 +9,11 @@ namespace Serilog.Sinks.Resilient.OTel.Exporters.ExportResults
         /// can defer execution and catch exceptions during conversion to avoid exceptions being thrown when
         /// the task is immediately fired and before the conversion is complete.
         /// </summary>
-        public static async Task<Out> SafeExecutionAsync<In, Out>(this Func<Task<In>> responseTask,
+        public static async Task<Out> SafeExecutionAsync<In, Out>(
+            this Func<Task<In>> responseTask,
             Func<In, Out> onSuccess,
-            Func<ExceptionDispatchInfo, Out> onError)
+            Func<ExceptionDispatchInfo, Out> onError
+        )
         {
             try
             {
@@ -26,9 +28,11 @@ namespace Serilog.Sinks.Resilient.OTel.Exporters.ExportResults
         /// <summary>
         /// This is just the synchronous version of <see cref="SafeExecutionAsync"/>.
         /// </summary>
-        public static Out SafeExecution<In, Out>(this Func<In> responseTask,
+        public static Out SafeExecution<In, Out>(
+            this Func<In> responseTask,
             Func<In, Out> onSuccess,
-            Func<ExceptionDispatchInfo, Out> onError)
+            Func<ExceptionDispatchInfo, Out> onError
+        )
         {
             try
             {

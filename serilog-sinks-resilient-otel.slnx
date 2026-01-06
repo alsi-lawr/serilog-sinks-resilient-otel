@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/example/">
+    <Project Path="example/Example/Example.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Serilog.Sinks.Resilient.OTel.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Serilog.Sinks.Resilient.OTel.Tests.csproj" />
+  </Folder>
+</Solution>

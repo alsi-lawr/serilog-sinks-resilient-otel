@@ -27,7 +27,8 @@ namespace Serilog.Sinks.Resilient.OTel.Exporters;
 /// </summary>
 sealed class GrpcExporter : IExporter, IDisposable
 {
-    readonly GrpcChannel? _logsChannel, _tracesChannel;
+    readonly GrpcChannel? _logsChannel,
+        _tracesChannel;
 
     readonly LogsService.LogsServiceClient? _logsClient;
     readonly TraceService.TraceServiceClient? _tracesClient;
@@ -50,8 +51,12 @@ sealed class GrpcExporter : IExporter, IDisposable
     /// <param name="httpMessageHandler">
     /// Custom HTTP message handler.
     /// </param>
-    public GrpcExporter(string? logsEndpoint, string? tracesEndpoint, IReadOnlyDictionary<string, string> headers,
-        HttpMessageHandler? httpMessageHandler = null)
+    public GrpcExporter(
+        string? logsEndpoint,
+        string? tracesEndpoint,
+        IReadOnlyDictionary<string, string> headers,
+        HttpMessageHandler? httpMessageHandler = null
+    )
     {
         var grpcChannelOptions = new GrpcChannelOptions();
         if (httpMessageHandler != null)
@@ -93,7 +98,8 @@ sealed class GrpcExporter : IExporter, IDisposable
 
     public Task<ExportResult> ExportAsync(ExportLogsServiceRequest request)
     {
-        var exportAction = () => _logsClient?.ExportAsync(request, _headers).ResponseAsync
+        var exportAction = () =>
+            _logsClient?.ExportAsync(request, _headers).ResponseAsync
             ?? Task.FromResult(new ExportLogsServiceResponse());
         return exportAction.ToExportResult(LogSuccessEvaluator);
     }
@@ -106,7 +112,8 @@ sealed class GrpcExporter : IExporter, IDisposable
 
     public Task<ExportResult> ExportAsync(ExportTraceServiceRequest request)
     {
-        var exportAction = () => _tracesClient?.ExportAsync(request, _headers).ResponseAsync
+        var exportAction = () =>
+            _tracesClient?.ExportAsync(request, _headers).ResponseAsync
             ?? Task.FromResult(new ExportTraceServiceResponse());
         return exportAction.ToExportResult(TraceSuccessEvaluator);
     }
