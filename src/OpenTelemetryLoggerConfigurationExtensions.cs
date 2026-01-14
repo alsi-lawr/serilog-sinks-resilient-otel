@@ -13,7 +13,6 @@
 // limitations under the License.
 
 // ReSharper disable once RedundantUsingDirective
-using System.Net.Http;
 using Serilog.Collections;
 using Serilog.Configuration;
 using Serilog.Core;
@@ -22,6 +21,7 @@ using Serilog.Sinks.Resilient.OTel;
 using Serilog.Sinks.Resilient.OTel.Configuration;
 using Serilog.Sinks.Resilient.OTel.Exporters;
 using Serilog.Sinks.Resilient.OTel.FileFallback;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Serilog;
@@ -52,7 +52,8 @@ public static class OpenTelemetryLoggerConfigurationExtensions
     public static LoggerConfiguration OpenTelemetry(
         this LoggerSinkConfiguration loggerSinkConfiguration,
         Action<BatchedOpenTelemetrySinkOptions> configure,
-        bool ignoreEnvironment = false)
+        bool ignoreEnvironment = false
+    )
     {
         return loggerSinkConfiguration.OpenTelemetry(
             configure,
@@ -72,10 +73,13 @@ public static class OpenTelemetryLoggerConfigurationExtensions
     public static LoggerConfiguration OpenTelemetry(
         this LoggerSinkConfiguration loggerSinkConfiguration,
         Action<BatchedOpenTelemetrySinkOptions> configure,
-        Func<string, string?>? getConfigurationVariable)
+        Func<string, string?>? getConfigurationVariable
+    )
     {
-        if (loggerSinkConfiguration == null) throw new ArgumentNullException(nameof(loggerSinkConfiguration));
-        if (configure == null) throw new ArgumentNullException(nameof(configure));
+        if (loggerSinkConfiguration == null)
+            throw new ArgumentNullException(nameof(loggerSinkConfiguration));
+        if (configure == null)
+            throw new ArgumentNullException(nameof(configure));
 
         var options = new BatchedOpenTelemetrySinkOptions();
         configure(options);
@@ -91,11 +95,13 @@ public static class OpenTelemetryLoggerConfigurationExtensions
             protocol: options.Protocol,
             headers: new Dictionary<string, string>(options.Headers),
             httpMessageHandler: options.HttpMessageHandler ?? CreateDefaultHttpMessageHandler(),
-            onBeginSuppressInstrumentation: options.OnBeginSuppressInstrumentation != null ?
-                () => options.OnBeginSuppressInstrumentation(true)
-                : null);
+            onBeginSuppressInstrumentation: options.OnBeginSuppressInstrumentation != null
+                ? () => options.OnBeginSuppressInstrumentation(true)
+                : null
+        );
 
-        ILogEventSink? logsSink = null, tracesSink = null;
+        ILogEventSink? logsSink = null,
+            tracesSink = null;
         var logsFallback = new ConcreteFileFallback(options.Fallback.LogFallback);
         var tracesFallback = new ConcreteFileFallback(options.Fallback.TraceFallback);
 
@@ -106,9 +112,12 @@ public static class OpenTelemetryLoggerConfigurationExtensions
                 formatProvider: options.FormatProvider,
                 resourceAttributes: new Dictionary<string, object>(options.ResourceAttributes),
                 includedData: options.IncludedData,
-                fallback: logsFallback);
+                fallback: logsFallback
+            );
 
-            logsSink = LoggerSinkConfiguration.CreateSink(wt => wt.Sink(openTelemetryLogsSink, options.BatchingOptions));
+            logsSink = LoggerSinkConfiguration.CreateSink(wt =>
+                wt.Sink(openTelemetryLogsSink, options.BatchingOptions)
+            );
         }
 
         if (options.TracesEndpoint != null)
@@ -117,14 +126,21 @@ public static class OpenTelemetryLoggerConfigurationExtensions
                 exporter: exporter,
                 resourceAttributes: new Dictionary<string, object>(options.ResourceAttributes),
                 includedData: options.IncludedData,
-                fallback: tracesFallback);
+                fallback: tracesFallback
+            );
 
-            tracesSink = LoggerSinkConfiguration.CreateSink(wt => wt.Sink(openTelemetryTracesSink, options.BatchingOptions));
+            tracesSink = LoggerSinkConfiguration.CreateSink(wt =>
+                wt.Sink(openTelemetryTracesSink, options.BatchingOptions)
+            );
         }
 
         var sink = new OpenTelemetrySink(exporter, logsSink, tracesSink);
 
-        return loggerSinkConfiguration.Sink(sink, options.RestrictedToMinimumLevel, options.LevelSwitch);
+        return loggerSinkConfiguration.Sink(
+            sink,
+            options.RestrictedToMinimumLevel,
+            options.LevelSwitch
+        );
     }
 
     /// <summary>
@@ -168,9 +184,11 @@ public static class OpenTelemetryLoggerConfigurationExtensions
         IncludedData? includedData = null,
         LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
         LoggingLevelSwitch? levelSwitch = null,
-        FallbackConfigurationOptions? fallbackOptions = null)
+        FallbackConfigurationOptions? fallbackOptions = null
+    )
     {
-        if (loggerSinkConfiguration == null) throw new ArgumentNullException(nameof(loggerSinkConfiguration));
+        if (loggerSinkConfiguration == null)
+            throw new ArgumentNullException(nameof(loggerSinkConfiguration));
 
         return loggerSinkConfiguration.OpenTelemetry(options =>
         {
@@ -179,7 +197,7 @@ public static class OpenTelemetryLoggerConfigurationExtensions
             options.IncludedData = includedData ?? options.IncludedData;
             options.RestrictedToMinimumLevel = restrictedToMinimumLevel;
             options.LevelSwitch = levelSwitch;
-            if(fallbackOptions is not null)
+            if (fallbackOptions is not null)
             {
                 options.Fallback = fallbackOptions;
             }
@@ -197,9 +215,11 @@ public static class OpenTelemetryLoggerConfigurationExtensions
     /// <param name="configure">The configuration callback.</param>
     public static LoggerConfiguration OpenTelemetry(
         this LoggerAuditSinkConfiguration loggerAuditSinkConfiguration,
-        Action<OpenTelemetrySinkOptions> configure)
+        Action<OpenTelemetrySinkOptions> configure
+    )
     {
-        if (configure == null) throw new ArgumentNullException(nameof(configure));
+        if (configure == null)
+            throw new ArgumentNullException(nameof(configure));
 
         var options = new OpenTelemetrySinkOptions();
         configure(options);
@@ -210,11 +230,13 @@ public static class OpenTelemetryLoggerConfigurationExtensions
             protocol: options.Protocol,
             headers: new Dictionary<string, string>(options.Headers),
             httpMessageHandler: options.HttpMessageHandler ?? CreateDefaultHttpMessageHandler(),
-            onBeginSuppressInstrumentation: options.OnBeginSuppressInstrumentation != null ?
-                () => options.OnBeginSuppressInstrumentation(true)
-                : null);
+            onBeginSuppressInstrumentation: options.OnBeginSuppressInstrumentation != null
+                ? () => options.OnBeginSuppressInstrumentation(true)
+                : null
+        );
 
-        ILogEventSink? logsSink = null, tracesSink = null;
+        ILogEventSink? logsSink = null,
+            tracesSink = null;
         var logsFallback = new ConcreteFileFallback(options.Fallback.LogFallback);
         var tracesFallback = new ConcreteFileFallback(options.Fallback.TraceFallback);
 
@@ -225,7 +247,8 @@ public static class OpenTelemetryLoggerConfigurationExtensions
                 formatProvider: options.FormatProvider,
                 resourceAttributes: new Dictionary<string, object>(options.ResourceAttributes),
                 includedData: options.IncludedData,
-                fallback: logsFallback);
+                fallback: logsFallback
+            );
         }
 
         if (options.TracesEndpoint != null)
@@ -234,12 +257,17 @@ public static class OpenTelemetryLoggerConfigurationExtensions
                 exporter: exporter,
                 resourceAttributes: new Dictionary<string, object>(options.ResourceAttributes),
                 includedData: options.IncludedData,
-                fallback: tracesFallback);
+                fallback: tracesFallback
+            );
         }
 
         var sink = new OpenTelemetrySink(exporter, logsSink, tracesSink);
 
-        return loggerAuditSinkConfiguration.Sink(sink, options.RestrictedToMinimumLevel, options.LevelSwitch);
+        return loggerAuditSinkConfiguration.Sink(
+            sink,
+            options.RestrictedToMinimumLevel,
+            options.LevelSwitch
+        );
     }
 
     /// <summary>
@@ -275,9 +303,11 @@ public static class OpenTelemetryLoggerConfigurationExtensions
         IDictionary<string, string>? headers = null,
         IDictionary<string, object>? resourceAttributes = null,
         IncludedData? includedData = null,
-        FallbackConfigurationOptions? fallbackOptions = null)
+        FallbackConfigurationOptions? fallbackOptions = null
+    )
     {
-        if (loggerAuditSinkConfiguration == null) throw new ArgumentNullException(nameof(loggerAuditSinkConfiguration));
+        if (loggerAuditSinkConfiguration == null)
+            throw new ArgumentNullException(nameof(loggerAuditSinkConfiguration));
 
         return loggerAuditSinkConfiguration.OpenTelemetry(options =>
         {
